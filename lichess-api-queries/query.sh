@@ -2,8 +2,8 @@
 
 echo "Start time: $(date)" >> data/query.log
 
-printf "eco	name	fen	moves	time_control	rating_group	white_wins	draw	black_wins\n" > data/game_results.tsv
-printf "eco	name	fen	moves	computer_analysis_cp\n" > data/computer_eval.tsv
+printf "eco	name	time_control	rating_group	white_wins	draw	black_wins\n" > data/game_results.tsv
+printf "eco	name	computer_analysis_cp\n" > data/computer_eval.tsv
 
 for filename in ../eco_openings/a.tsv ../eco_openings/b.tsv ../eco_openings/c.tsv ../eco_openings/d.tsv ../eco_openings/e.tsv
 do
