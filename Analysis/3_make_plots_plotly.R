@@ -67,7 +67,58 @@ time.control <- "blitz"
     )
   }
   
-
+  # Buttons for zooming into quadrants
+  # updatemenus component
+  updatemenus <- list(
+    list(
+      active = 0,
+      type = 'buttons',
+      buttons = list(
+        
+        list(
+          label = "All quadrants",
+          method = "relayout",
+          args = list(list(
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+            ))),
+        
+        list(
+          label = "Upper-left quadrant",
+          method = "relayout",
+          args = list(list(
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+            ))),
+        
+        list(
+          label = "Upper-right quadrant",
+          method = "relayout",
+          args = list(list(
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+            ))),
+        
+        
+        list(
+          label = "Lower-left quadrant",
+          method = "relayout",
+          args = list(list(
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+            ))),
+        
+        
+        list(
+          label = "Lower-right quadrant",
+          method = "relayout",
+          args = list(list(
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+            )))
+      )
+    )
+  )
   
   fig <- plot_ly(current_game_results) %>%
     layout(shapes = list(vline(0), hline(0.5)))
@@ -92,9 +143,9 @@ time.control <- "blitz"
     ) %>% 
     #config(scrollZoom = TRUE) %>%
     layout(
-      xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = FALSE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-      yaxis = list(title = "Percent of Games Won for White", fixedrange = FALSE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
-      #dragmode='pan'
+      xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
+      yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25),
+      updatemenus = updatemenus
       )
   
   fig <- fig %>% add_trace(
@@ -105,7 +156,7 @@ time.control <- "blitz"
     hide_colorbar() %>%
     layout(showlegend = FALSE)
   
-  # Click top open lichess url
+  # Click to open lichess url
   js <- "
         function(el, x) {
           el.on('plotly_click', function(d) {
@@ -116,6 +167,8 @@ time.control <- "blitz"
         }"
   
   fig <- fig %>% onRender(js)
+  
+  fig
   
   saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
 #})
