@@ -2,6 +2,7 @@ library(reshape2)
 library(tidyverse)
 library(plotly)
 library(htmlwidgets)
+library(htmltools)
 
 setwd("~/Box/repos/Lichess_Opening_Performance/Analysis/")
 
@@ -40,6 +41,8 @@ time.control <- "blitz"
   current_game_results$lichess_url <- sapply(paste0("https://lichess.org/analysis/", current_game_results$fen), URLencode)
   
   current.lm <- lm(white_win_proportion ~ computer_analysis_cp, current_game_results)
+  
+  # Functions for horizontal and vertical dotted lines
   vline <- function(x = 0, color = "black") {
     list(
       type = "line", 
@@ -63,6 +66,8 @@ time.control <- "blitz"
       line = list(color = color, width=1, dash="dot")
     )
   }
+  
+
   
   fig <- plot_ly(current_game_results) %>%
     layout(shapes = list(vline(0), hline(0.5)))
@@ -100,6 +105,7 @@ time.control <- "blitz"
     hide_colorbar() %>%
     layout(showlegend = FALSE)
   
+  # Click top open lichess url
   js <- "
         function(el, x) {
           el.on('plotly_click', function(d) {
@@ -109,7 +115,7 @@ time.control <- "blitz"
           });
         }"
   
-  fig %>% onRender(js)
+  fig <- fig %>% onRender(js)
   
   saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
 #})
