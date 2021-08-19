@@ -11,7 +11,7 @@ eco_openings <- read.delim("../data/eco_openings.tsv", sep="\t", header=TRUE)
 computer_eval <- read.delim("../data/computer_eval_unique_names.tsv", sep="\t", header=TRUE)
 
 #scatterplots.by.time.control <- lapply(c("bullet", "blitz","rapid", "classical"), function(time.control) {
-time.control <- "blitz"
+time.control <- "rapid"
   current_game_results <- game_results %>% 
     group_by(name.unique, time_control) %>% 
     summarise(white_wins = sum(white_wins), draw = sum(draw), black_wins = sum(black_wins), total_games = sum(total_games)) %>% 
@@ -25,18 +25,6 @@ time.control <- "blitz"
     mutate(black_win_proportion = black_wins / total_games) %>% 
     ungroup() %>%
     mutate(residuals = lm(formula=white_win_proportion ~ computer_analysis_cp) %>% residuals())
-  
-  ggplot(current_game_results, aes(x=computer_analysis_cp, y=white_win_proportion, colour = rank(white_win_proportion))) + 
-    geom_point(aes(size = total_games), shape=1) +
-    scale_size_continuous(range = c(1,5), trans="log10", labels=scales::comma) +
-    geom_smooth(method='lm', formula= y~x, show.legend = FALSE, se=FALSE, color="black", size=0.5, fullrange=TRUE) +
-    theme_classic() +
-    scale_color_distiller(palette = "RdYlBu") +
-    geom_vline(xintercept=c(0), linetype="dotted") +
-    geom_hline(yintercept=c(0.5), linetype="dotted") +
-    scale_x_continuous(name = "Computer evaluation: centipawns", limits = c(-600,600), breaks = c(seq(-500,500,100))) +
-    scale_y_continuous(name = "Percent of games won for white", limit = c(-0.1, 1.1), breaks = c(seq(0,1,0.25)), labels = scales::percent) +
-    guides(color = "none", size=guide_legend("Number of games"))
   
   current_game_results$lichess_url <- sapply(paste0("https://lichess.org/analysis/", current_game_results$fen), URLencode)
   
@@ -129,7 +117,10 @@ time.control <- "blitz"
     type = 'scatter',
     mode = 'markers',
     color = ~rank(white_win_proportion), 
-    size = ~log10(total_games),
+    #size = ~log10(total_games),
+    #sizes = c(5, 100),
+    #sizemode="diameter",
+    marker = list(size = log10(current_game_results$total_games) * 3, opacity = 0.5, sizemode = 'diameter'),
     colors = "RdYlBu",
     text = ~paste(
           name.unique, 
@@ -144,7 +135,8 @@ time.control <- "blitz"
     #config(scrollZoom = TRUE) %>%
     layout(
       xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-      yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25),
+      yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25, scaleanchor = "x", scaleratio = 1/300),
+      #autosize = T, width = 800, height = 500,
       updatemenus = updatemenus
       )
   
