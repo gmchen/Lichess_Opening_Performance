@@ -87,31 +87,31 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
       yanchor = "bottom",
       pad = list('r'= 0, 't'= 10, 'b' = 10),
       x = 0.5,
-      y = -0.2,
+      y = 1.01,
       buttons = list(
         
         list(
           label = "Default zoom",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
             ))),
         
         list(
           label = "Zoom: Upper-left",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
             ))),
         
         list(
           label = "Zoom: Upper-right",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
             ))),
         
         
@@ -119,8 +119,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           label = "Zoom: Lower-left",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
             ))),
         
         
@@ -128,8 +128,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           label = "Zoom: Lower-right",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25)
             )))
       )
     )
@@ -172,7 +172,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
       xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
       yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25, scaleanchor = "x", scaleratio = 1/300),
       #autosize = T, width = 800, height = 500,
-      margin =  list(l = 80, r = 80, b = 80, t = 100, pad = 0),
+      #margin =  list(l = 80, r = 80, b = 80, t = 100, pad = 0),
       updatemenus = updatemenus
       )
   
@@ -182,7 +182,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
     line=list(color = "black")
     ) %>% 
     hide_colorbar() %>%
-    layout(showlegend = FALSE, title = list(text=plot.title, x = 60))
+    layout(showlegend = FALSE, x = 60) %>% 
+    config(displayModeBar = FALSE)
   
   # Click to open lichess url
   js <- "
@@ -200,6 +201,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
   
   #saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
   #saveWidget(fig, "fig.html", selfcontained = T)
-  saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = F, libdir = "lib")
+  #saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = F, libdir = "lib")
+  saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = FALSE)
   #})
 }
+

@@ -9,6 +9,7 @@ version:          1.0
 gitbook_version:  3.2.3
 
 url:              'https://gmchen.github.io'
+#url:              'http://127.0.0.1:4000'
 baseurl:          '/Lichess_Opening_Performance'
 rss:              RSS
 
