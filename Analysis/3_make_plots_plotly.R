@@ -139,6 +139,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
     layout(shapes = list(vline(0), hline(0.5)))
   
   fig <- fig %>% add_trace(
+#  fig <- plot_ly(current_game_results,
     x = ~computer_analysis_cp,
     y = ~white_win_proportion,
     type = 'scatter',
@@ -157,20 +158,13 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           '<br>Black win:', scales::percent(black_win_proportion, accuracy = 1), 
           '<br>Computer evaluation (centipawns):', computer_analysis_cp),
     hoverinfo = 'text',
-    transforms = list(
-      list(
-        type = 'filter',
-        target = 'time_control',
-        operation = '==',
-        value = "Lichess Games: Blitz"
-      )
-    ),
     custom_url = current_game_results$lichess_url
     ) %>% 
     #config(scrollZoom = TRUE) %>%
     layout(
       xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = -600, dtick = 100),
-      yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25, scaleanchor = "x", scaleratio = 1/300),
+      #yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tickformat = "%", tick0 = 0, dtick = 0.25, scaleanchor = "x", scaleratio = 1/300),
+      yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, tick0 = 0, dtick = 0.25, scaleanchor = "x", scaleratio = 1/300),
       #autosize = T, width = 800, height = 500,
       #margin =  list(l = 80, r = 80, b = 80, t = 100, pad = 0),
       updatemenus = updatemenus
@@ -182,7 +176,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
     line=list(color = "black")
     ) %>% 
     hide_colorbar() %>%
-    layout(showlegend = FALSE, x = 60) %>% 
+    layout(showlegend = FALSE, x = 60) %>%
     config(displayModeBar = FALSE)
   
   # Click to open lichess url
@@ -195,11 +189,74 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           });
         }"
   
+  # Search for an opening
+  fig <- htmlwidgets::appendContent(fig, htmltools::tags$label("for"='inputText', 'Search for an opening:'))
+  fig <- htmlwidgets::appendContent(fig, htmltools::tags$input(id='inputText', value='', ''), htmltools::tags$button(id='buttonSearch', 'Search'), htmltools::tags$button(id='buttonReset', 'Reset'))
+  fig <- htmlwidgets::appendContent(fig, htmltools::tags$script(HTML(
+    '
+    document.getElementById("buttonSearch").addEventListener("click", function() {        
+    queryString = document.getElementById("inputText").value.toLowerCase();
+    var i = 0;
+    var j = 0;
+    var found = [];
+    var newx = [];
+    var newy = [];
+    var myDiv = document.getElementsByClassName("js-plotly-plot")[0];
+    var data = JSON.parse(document.querySelectorAll("script[type=\'application/json\']")[0].innerHTML);
+    for (j = 0; j < data.x.data[i].text.length; j += 1) {
+      currentString = data.x.data[i].text[j].toLowerCase();
+      if (currentString.indexOf(queryString) !== -1) {
+        found.push({curveNumber: i, pointNumber: j});
+        newx[j] = data.x.data[i].x[j];
+        newy[j] = data.x.data[i].y[j];
+      } else {
+        newx[j] = -1000000;
+        newy[j] = -1000000
+      }
+    }
+    var update = {"x":[newx], "y":[newy]};
+    Plotly.restyle(myDiv, update, [0]);
+    //Plotly.Fx.hover(myDiv, found);
+    });
+    
+    document.getElementById("buttonReset").addEventListener("click", function() {
+      var i = 0;
+      var j = 0;
+      var myDiv = document.getElementsByClassName("js-plotly-plot")[0];
+      var data = JSON.parse(document.querySelectorAll("script[type=\'application/json\']")[0].innerHTML);
+      var newx = [];
+      var newy = [];
+      for (j = 0; j < data.x.data[i].text.length; j += 1) {
+        newx[j] = data.x.data[i].x[j];
+        newy[j] = data.x.data[i].y[j];
+      }
+      var update = {"x":[newx], "y":[newy]};
+      Plotly.restyle(myDiv, update, [0]);
+    });
+    document.getElementById("inputText").addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById("buttonSearch").click();
+      }
+    });
+  ')))                                                    
+  
+  fig$sizingPolicy$browser$fill <- FALSE
+  fig$sizingPolicy$viewer$fill <- FALSE
+  fig$sizingPolicy$browser$padding <- 5
+  fig$sizingPolicy$viewer$padding <- 5
+  fig$sizingPolicy$defaultWidth <- 800
+  fig$sizingPolicy$defaultHeight <- 700
+  
+  
   fig <- fig %>% onRender(js)
   
   fig
   
-  #saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
+  saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
   #saveWidget(fig, "fig.html", selfcontained = T)
   #saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = F, libdir = "lib")
   saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = FALSE)
