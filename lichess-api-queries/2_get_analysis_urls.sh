@@ -22,9 +22,9 @@ do
 			-F "pgn=$san" \
 			https://lichess.org/api/import)
 		echo $return_val
-		if [[ "$return_val" =~ .*"429 Too Many Requests".* ]]
+		if [[ "$return_val" =~ .*"Too many requests".* ]]
 		then
- 			echo "Received 429 status - waiting 1 minute"
+ 			echo "Received too many requests message - waiting 1 minute"
 			sleep 1m
 		else
 			break
