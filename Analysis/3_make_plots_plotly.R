@@ -9,6 +9,8 @@ setwd("~/Box/repos/Lichess_Opening_Performance/Analysis/")
 game_results <- read.delim("../data/game_results_with_computer_analysis.tsv", sep="\t", header=TRUE)
 eco_openings <- read.delim("../data/eco_openings.tsv", sep="\t", header=TRUE)
 computer_eval <- read.delim("../data/computer_eval_unique_names.tsv", sep="\t", header=TRUE)
+computer_analysis_urls <- read.delim("../data/computer_analysis_urls_with_last_move.tsv", sep="\t", header=TRUE)
+
 
 #scatterplots.by.time.control <- lapply(c("bullet", "blitz","rapid", "classical"), function(time.control) {
 
@@ -32,9 +34,10 @@ game_results <- game_results %>%
     mutate(black_win_proportion = black_wins / total_games) %>% 
     ungroup()
 
-# TODO: update with analysis board urls
-game_results$lichess_url <- sapply(paste0("https://lichess.org/analysis/", game_results$fen), URLencode)
-
+# Add analysis board urls
+game_results <- game_results %>% 
+  left_join(computer_analysis_urls) %>%
+  mutate(url.use = url %>% paste0("/", ifelse(white_win_proportion / black_win_proportion > 1, "white", "black"), "#", last_move_number))
 
 for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "masters")) {
   print(current.time.control)
@@ -45,7 +48,6 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
                           classical="Lichess Games: Classical",
                           any="Lichess Games: All",
                           masters="Master Games")
-  #current.time.control <- "Lichess Games: Blitz"
   
   current_game_results <- game_results %>% filter(time_control == current.time.control)
   
@@ -158,7 +160,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           '<br>Black win:', scales::percent(black_win_proportion, accuracy = 1), 
           '<br>Computer evaluation (centipawns):', computer_analysis_cp),
     hoverinfo = 'text',
-    custom_url = current_game_results$lichess_url
+    custom_url = current_game_results$url.use
     ) %>% 
     #config(scrollZoom = TRUE) %>%
     layout(
@@ -255,9 +257,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
   
   fig
   
-  saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
-  #saveWidget(fig, "fig.html", selfcontained = T)
-  #saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = F, libdir = "lib")
+  #saveWidget(fig, "fig.html", selfcontained = F, libdir = "lib")
   saveWidget(fig, paste0("output/plotly/white_win_proportion_vs_computer_eval_", current.time.control, ".html"), selfcontained = FALSE)
   #})
 }
