@@ -1,0 +1,31 @@
+<div class="body-inner">
+    <div class="book-header" role="navigation">
+        <!-- Title -->
+        <h1>
+            {% if page.title %}
+                <a href="." ></a>
+            {% else %}
+                <a href="." ></a>
+            {% endif %}
+        </h1>
+    </div>
+    <div class="page-wrapper" tabindex="-1" role="main">
+        <div class="page-inner">
+            <div id="book-search-results">
+                <div class="search-noresults">
+                    <section class="normal markdown-section">
+
+                        {% if page.title %}
+                            <h1 id="{{ page.id }}">{{ page.title | escape }}</h1>
+                        {% else %}
+                            <h1 id="{{ page.id }}">{{ site.title | escape }}</h1>
+                        {% endif %}
+
+                        {{ content }}
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
