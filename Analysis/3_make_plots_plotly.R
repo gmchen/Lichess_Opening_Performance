@@ -85,7 +85,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
       direction = "right",
       xanchor = 'center',
       yanchor = "bottom",
-      pad = list('r'= 0, 't'= 10, 'b' = 10),
+      pad = list('r'= 0, 't'= 5, 'b' = 10),
       x = 0.5,
       y = 1.01,
       buttons = list(
@@ -99,7 +99,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
             ))),
         
         list(
-          label = "Zoom: Upper-left",
+          label = "Upper-left",
           method = "relayout",
           args = list(list(
               xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
@@ -107,7 +107,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
             ))),
         
         list(
-          label = "Zoom: Upper-right",
+          label = "Upper-right",
           method = "relayout",
           args = list(list(
               xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
@@ -116,7 +116,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
         
         
         list(
-          label = "Zoom: Lower-left",
+          label = "Lower-left",
           method = "relayout",
           args = list(list(
               xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
@@ -125,7 +125,7 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
         
         
         list(
-          label = "Zoom: Lower-right",
+          label = "Lower-right",
           method = "relayout",
           args = list(list(
               xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
@@ -244,13 +244,12 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
     });
   ')))                                                    
   
-  fig$sizingPolicy$browser$fill <- FALSE
-  fig$sizingPolicy$viewer$fill <- FALSE
-  fig$sizingPolicy$browser$padding <- 5
-  fig$sizingPolicy$viewer$padding <- 5
+  fig$sizingPolicy$browser$fill <- TRUE
+  fig$sizingPolicy$viewer$fill <- TRUE
+  fig$sizingPolicy$browser$padding <- 30
+  fig$sizingPolicy$viewer$padding <- 30
   fig$sizingPolicy$defaultWidth <- 800
   fig$sizingPolicy$defaultHeight <- 700
-  
   
   fig <- fig %>% onRender(js)
   
