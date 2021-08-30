@@ -6,7 +6,7 @@ layout: post
 <iframe src="{{site.baseurl}}/assets/white_win_proportion_vs_computer_eval_any.html" style="height: calc(100vh - 150px); width: 100%; max-width: calc((100vh - 150px) * 1.20); border: none; padding: 0px"></iframe>
 <iframe src="{{site.baseurl}}/assets/white_win_proportion_vs_computer_eval_any.html" style="height: calc(100vh - 150px); width: 100%; max-width: calc((100vh - 150px) * 1.20); border: none; padding: 0px"></iframe>
 -->
-<iframe src="{{site.baseurl}}/assets/white_win_proportion_vs_computer_eval_any.html" style="height: 700px; width: 100%; border: none; padding: 0px"></iframe>
+<iframe src="{{site.baseurl}}/assets/white_win_proportion_vs_computer_eval_any.html" style="height: calc(100vh - 150px); width: 100%; max-width: calc((100vh - 150px) * 1.30); border: none; padding: 0px"></iframe>
 
 Ever wondered which chess openings work well in real-life games compared to computer evaluation? This may help!
 * Each point represents one of ~3,400 chess openings, and the size represents the number of games played on Lichess
