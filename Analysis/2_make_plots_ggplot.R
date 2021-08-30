@@ -4,6 +4,7 @@ library(tidyverse)
 setwd("~/Box/repos/Lichess_Opening_Performance/Analysis/")
 
 game_results <- read.delim("../data/game_results_with_computer_analysis.tsv", sep="\t", header=TRUE)
+computer_eval <- read.delim("../data/computer_eval_unique_names.tsv", sep="\t", header=TRUE)
 
 game_results %>% filter(rating_group=="all_lichess_users") %>% 
   filter(total_games >= 100) %>% 
@@ -179,7 +180,7 @@ regression.slope.stats.by.time.control <- sapply(c("bullet", "blitz","rapid", "c
 regression.slope.stats.by.time.control <- as.data.frame(t(regression.slope.stats.by.time.control))
 
 regression.slope.stats.by.time.control$time_control <- rownames(regression.slope.stats.by.time.control)
-regression.slope.stats.by.time.control$time_control <- factor(regression.slope.stats$time_control, levels=c("bullet", "blitz", "rapid", "classical"))
+regression.slope.stats.by.time.control$time_control <- factor(regression.slope.stats.by.time.control$time_control, levels=c("bullet", "blitz", "rapid", "classical"))
 
 ggplot(regression.slope.stats.by.time.control, aes(x=time_control, y=coef * 1e4)) +
   geom_errorbar(aes(ymin=lcb.95*1e4, ymax=ucb.95*1e4), width=0.5) +
