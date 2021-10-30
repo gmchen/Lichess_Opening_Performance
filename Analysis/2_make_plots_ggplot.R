@@ -25,7 +25,8 @@ game_results %>% filter(rating_group=="masters") %>%
   #geom_text() +
   theme_bw()
 
-
+# These plots are confounded by time control. For example, higher-rated players tend to play
+# faster time controls
 scatterplots.by.rating <- lapply(c("1600", "1800", "2000", "2200", "2500", "masters"), function(current.rating) {
   current_game_results <- game_results %>% 
     group_by(name.unique, rating_group) %>% 
@@ -125,36 +126,7 @@ scatterplots.by.time.control.and.rating <- lapply(c("bullet", "blitz","rapid", "
 
 p <- cowplot::plot_grid(plotlist=unlist(scatterplots.by.time.control.and.rating, recursive = F), ncol = 5)
 
-ggsave("scatterplots_by_timecontrol_rating.pdf", p, width=30, height=20)
-
-scatterplots.between_rating_groups <- lapply(c("bullet", "blitz","rapid", "classical"), function(time.control) {
-  current_game_results <- game_results %>% 
-    group_by(name.unique, time_control) %>% 
-    summarise(white_wins = sum(white_wins), black_wins = sum(black_wins), total_games = sum(total_games)) %>% 
-    filter(time_control==time.control) %>% 
-    left_join(computer_eval %>% select(name.unique, computer_analysis_cp)) %>%
-    filter(total_games >= 100) %>% 
-    filter(!is.na(computer_analysis_cp)) %>%
-    mutate(white_win_proportion = white_wins / total_games) %>% 
-    mutate(white_win_odds = white_wins / black_wins) %>%
-    ungroup() %>%
-    mutate(residuals = lm(formula=white_win_proportion ~ computer_analysis_cp) %>% residuals())
-  
-  ggplot(current_game_results, aes(x=computer_analysis_cp, y=white_win_proportion, size = total_games, colour = rank(residuals), label=name.unique)) + 
-    geom_point(shape=1) +
-    #geom_point() +
-    scale_size_continuous(range = c(1,5), trans="log10") +
-    #geom_text() +
-    geom_smooth(method='lm', formula= y~x, show.legend = FALSE, se=FALSE, color="black", size=0.5, fullrange=TRUE) +
-    theme_classic() +
-    scale_color_distiller(palette = "RdYlBu") +
-    geom_vline(xintercept=c(0), linetype="dotted") +
-    geom_hline(yintercept=c(0.5), linetype="dotted") +
-    scale_x_continuous(limits = c(-600,600), breaks = c(seq(-500,500,100))) +
-    scale_y_continuous(limit = c(-0.1, 1.1), breaks = c(seq(0,1,0.25)))
-  #theme(panel.grid.minor.x = element_blank(),
-  #      panel.grid.minor.y = element_blank())
-})
+ggsave("output/ggplot/scatterplots_by_timecontrol_rating.pdf", p, width=30, height=20)
 
 regression.slope.stats.by.time.control <- sapply(c("bullet", "blitz","rapid", "classical"), function(time.control) {
   lm.obj <- game_results %>% 
@@ -188,6 +160,8 @@ ggplot(regression.slope.stats.by.time.control, aes(x=time_control, y=coef * 1e4)
   theme_classic() +
   scale_y_continuous(limit = c(0, 14), breaks = c(seq(0,15,2)), expand = c(0,0)) +
   ylab("Increase in win percentage per 100 centipawn")
+
+ggsave("output/ggplot/regression_slope_by_time_control.pdf", width=6, height=6)
 
 regression.slope.stats.by.rating <- sapply(c("1600", "1800", "2000", "2200", "2500", "masters"), function(current.rating) {
   lm.obj <- game_results %>% 
@@ -263,6 +237,8 @@ ggplot(regression.slope.stats.by.time.control.and.rating, aes(x=time_control, y=
   theme_classic() +
   scale_y_continuous(limit = c(-1, 14), breaks = c(seq(0,15,2)), expand = c(0,0)) +
   ylab("Increase in win percentage per 100 centipawn")
+
+ggsave("output/ggplot/regression_slope_by_time_control_rating.pdf", width=6, height=6)
 
 # Is regression slope significantly influenced by rating and/or time control
 lm.out <- game_results %>%
