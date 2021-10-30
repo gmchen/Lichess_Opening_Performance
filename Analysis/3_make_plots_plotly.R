@@ -264,8 +264,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
   
   fig$sizingPolicy$browser$fill <- TRUE
   fig$sizingPolicy$viewer$fill <- TRUE
-  fig$sizingPolicy$browser$padding <- 50
-  fig$sizingPolicy$viewer$padding <- 50
+  fig$sizingPolicy$browser$padding <- 30
+  fig$sizingPolicy$viewer$padding <- 30
   fig$sizingPolicy$defaultWidth <- 800
   fig$sizingPolicy$defaultHeight <- 700
   
