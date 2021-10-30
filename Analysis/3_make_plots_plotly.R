@@ -79,6 +79,22 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
   }
   
   # Buttons for zooming into quadrants
+  topright_zoom_limits <- current_game_results %>%
+    filter(computer_analysis_cp > mean(computer_analysis_cp) & white_win_proportion > mean(white_win_proportion)) %>%
+    summarize(xmax=max(computer_analysis_cp), ymax=max(white_win_proportion))
+  topleft_zoom_limits <- current_game_results %>%
+    filter(computer_analysis_cp < mean(computer_analysis_cp) & white_win_proportion > mean(white_win_proportion)) %>%
+    summarize(xmin=min(computer_analysis_cp), ymax=max(white_win_proportion))
+  bottomleft_zoom_limits <- current_game_results %>%
+    filter(computer_analysis_cp < mean(computer_analysis_cp) & white_win_proportion < mean(white_win_proportion)) %>%
+    summarize(xmin=min(computer_analysis_cp), ymin=min(white_win_proportion))
+  bottomright_zoom_limits <- current_game_results %>%
+    filter(computer_analysis_cp > mean(computer_analysis_cp) & white_win_proportion < mean(white_win_proportion)) %>%
+    summarize(xmax=max(computer_analysis_cp), ymin=min(white_win_proportion))
+  
+  mean_computer_analysis_cp <- mean(current_game_results$computer_analysis_cp)
+  mean_white_win_proportion <- mean(current_game_results$white_win_proportion)
+    
   # updatemenus component
   updatemenus <- list(
     list(
@@ -104,16 +120,16 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           label = "↖",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = extendrange(c(topleft_zoom_limits$xmin, mean_computer_analysis_cp), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = extendrange(c(mean_white_win_proportion, topleft_zoom_limits$ymax), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
             ))),
         
         list(
           label = "↗",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0.475, 1), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = extendrange(c(mean_computer_analysis_cp, topright_zoom_limits$xmax), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = extendrange(c(mean_white_win_proportion, topright_zoom_limits$ymax), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
             ))),
         
         
@@ -121,8 +137,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           label = "↙",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-600, 30), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = extendrange(c(bottomleft_zoom_limits$xmin, mean_computer_analysis_cp), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = extendrange(c(bottomleft_zoom_limits$ymin, mean_white_win_proportion), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
             ))),
         
         
@@ -130,8 +146,8 @@ for(current.time.control in c("bullet", "blitz", "rapid", "classical", "any", "m
           label = "↘",
           method = "relayout",
           args = list(list(
-              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = c(-30, 600), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
-              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = c(0, 0.525), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
+              xaxis = list(title = "Computer Evaluation: Centipawns", fixedrange = TRUE, range = extendrange(c(mean_computer_analysis_cp, bottomright_zoom_limits$xmax), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tick0 = -600, dtick = 100),
+              yaxis = list(title = "Percent of Games Won for White", fixedrange = TRUE, range = extendrange(c(bottomright_zoom_limits$ymin, mean_white_win_proportion), f=0.10), zeroline = FALSE, showline=TRUE, showgrid = TRUE, automargin = TRUE, tickformat = "%", tick0 = 0, dtick = 0.10)
             )))
       )
     )
